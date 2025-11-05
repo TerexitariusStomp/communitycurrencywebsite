@@ -32,8 +32,8 @@ jobs:
           cache-dependency-path: code/package-lock.json
 
       - name: Install dependencies
-        working-directory: code
         run: |
+          cd code
           npm ci --legacy-peer-deps
 
       - name: Build static site (Next export)
