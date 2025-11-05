@@ -29,18 +29,36 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache-dependency-path: code/package-lock.json
+          cache: 'npm'
+          cache-dependency-path: |
+            code/package-lock.json
+            package-lock.json
+
+      - name: Detect app directory
+        id: detect
+        shell: bash
+        run: |
+          if [ -f code/package.json ]; then
+            echo "APP_DIR=code" >> "$GITHUB_ENV"
+            echo "Detected app directory: code"
+          elif [ -f package.json ]; then
+            echo "APP_DIR=." >> "$GITHUB_ENV"
+            echo "Detected app directory: . (repo root)"
+          else
+            echo "No package.json found at repo root or in ./code" >&2
+            exit 1
+          fi
+          echo "Workspace: $GITHUB_WORKSPACE"
+          ls -la
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps --prefix "$APP_DIR"
 
       - name: Build static site (Next export)
-        working-directory: code
         env:
           # Set the base path to the repository name for GitHub Pages project sites
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
-        run: |
-          npm run build
+        run: npm run build --prefix "$APP_DIR"
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -48,7 +66,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: code/out
+          path: ${{ env.APP_DIR }}/out
 
       - name: Deploy to GitHub Pages
         id: deployment
