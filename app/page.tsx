@@ -140,13 +140,6 @@ export default function Home() {
                 src={withBase('/community-currency-notes.jpg')}
                 alt="Community currency banknotes in Brazil"
                 className="w-full h-auto rounded-lg shadow-lg"
-                onError={(e) => {
-                  const t = e.currentTarget as HTMLImageElement
-                  if (!t.dataset.fallback) {
-                    t.dataset.fallback = '1'
-                    t.src = withBase('/placeholder.jpg')
-                  }
-                }}
               />
             </div>
           </div>
