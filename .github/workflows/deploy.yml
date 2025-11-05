@@ -34,8 +34,13 @@ jobs:
       - name: Install dependencies
         run: |
           ls -la
-          npm ci --legacy-peer-deps
-        working-directory: code
+          if [ -d "code" ]; then
+            cd code
+            npm ci --legacy-peer-deps
+          else
+            echo "Code directory not found"
+            exit 1
+          fi
 
       - name: Build static site (Next export)
         working-directory: code
