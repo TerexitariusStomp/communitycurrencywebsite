@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, TrendingUp, Users, Shield, Zap } from "lucide-react"
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || ""
+const withBase = (p: string) => (BASE_PATH ? `${BASE_PATH}${p}` : p)
 
 export default function Home() {
   return (
@@ -136,9 +137,16 @@ export default function Home() {
 
             <div className="relative">
               <img
-                src={`${BASE_PATH}/community-currency-notes.jpg`}
+                src={withBase('/community-currency-notes.jpg')}
                 alt="Community currency banknotes in Brazil"
                 className="w-full h-auto rounded-lg shadow-lg"
+                onError={(e) => {
+                  const t = e.currentTarget as HTMLImageElement
+                  if (!t.dataset.fallback) {
+                    t.dataset.fallback = '1'
+                    t.src = withBase('/placeholder.jpg')
+                  }
+                }}
               />
             </div>
           </div>
