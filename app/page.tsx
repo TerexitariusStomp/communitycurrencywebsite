@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, TrendingUp, Users, Shield, Zap } from "lucide-react"
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || ""
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -134,7 +136,7 @@ export default function Home() {
 
             <div className="relative">
               <img
-                src="/community-currency-notes.jpg"
+                src={`${BASE_PATH}/community-currency-notes.jpg`}
                 alt="Community currency banknotes in Brazil"
                 className="w-full h-auto rounded-lg shadow-lg"
               />
