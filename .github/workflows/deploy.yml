@@ -33,7 +33,8 @@ jobs:
 
       - name: Install dependencies
         working-directory: code
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm ci --legacy-peer-deps
 
       - name: Build static site (Next export)
         working-directory: code
